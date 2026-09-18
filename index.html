@@ -644,6 +644,11 @@
       let chosenOption = "";
       let chosenDetail = ""; // location or sub-choice picked on page 2b
 
+      // Who is this link for? Add ?ime=Ana to the URL you send her, so you can
+      // tell entries apart later — e.g. yoursite.com/index.html?ime=Ana
+      const recipientName =
+        new URLSearchParams(window.location.search).get("ime") || "Neznana";
+
       // Sub-choice config per activity
       const subChoices = {
         pijača: {
@@ -898,6 +903,19 @@
 
           requestAnimationFrame(frame);
 
+          function kick(x, y) {
+            const cx = rect.left + px + rect.width / 2;
+            const cy = rect.top + py + rect.height / 2;
+            const dx = cx - x,
+              dy = cy - y;
+            const dist = Math.hypot(dx, dy) || 1;
+            // Big instant shove — a tap never fires touchmove, so this is the
+            // only warning the button gets before touchend/click would land.
+            vx += (dx / dist) * REPEL_FORCE * 3.5;
+            vy += (dy / dist) * REPEL_FORCE * 3.5;
+            vRot += (Math.random() - 0.5) * REPEL_FORCE * 2;
+          }
+
           document.addEventListener("mousemove", (e) => {
             mx = e.clientX;
             my = e.clientY;
@@ -907,6 +925,16 @@
             (e) => {
               mx = e.touches[0].clientX;
               my = e.touches[0].clientY;
+            },
+            { passive: true },
+          );
+          document.addEventListener(
+            "touchstart",
+            (e) => {
+              const t = e.touches[0];
+              mx = t.clientX;
+              my = t.clientY;
+              kick(mx, my);
             },
             { passive: true },
           );
@@ -953,6 +981,7 @@
           večerja: "Večerja",
         };
         const data = {
+          kdo: recipientName,
           zmenek: optionLabels[chosenOption] || "Neznan",
           podrobnost: chosenDetail || "—",
           datum: date,
@@ -987,7 +1016,8 @@
             Accept: "application/json",
           },
           body: JSON.stringify({
-            _subject: "💌 Novi zmenek!",
+            _subject: `💌 Novi zmenek! (${recipientName})`,
+            Kdo: recipientName,
             Aktivnost: data.zmenek,
             Podrobnost: data.podrobnost,
             Datum: data.datum,
