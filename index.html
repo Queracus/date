@@ -121,6 +121,8 @@
         font-weight: 700;
         letter-spacing: -0.02em;
         line-height: 1.2;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       h1 {
@@ -610,7 +612,8 @@
       <section class="page" id="page4" aria-label="Potrjen zmenek">
         <div class="card" role="region" aria-live="polite">
           <div class="page1-deco" aria-hidden="true">💕</div>
-          <h2 id="confirmMsg"></h2>
+          <h2>Super! Torej</h2>
+          <p class="subtitle" id="confirmMsg" style="margin-bottom: 0"></p>
         </div>
       </section>
     </main>
@@ -647,7 +650,7 @@
           ribbon: "📍 Kje se dobiva?",
           choices: [
             {
-              icon: "🍺",
+              icon: ⛲",
               label: "Kongresni trg (pri Sidru)",
               value: "Kongresni trg (pri Sidru)",
             },
@@ -963,8 +966,8 @@
         const place = data.podrobnost !== "—" ? data.podrobnost : "";
         const confirmMsg = document.getElementById("confirmMsg");
         confirmMsg.textContent = place
-          ? `Super, se vidiva ${formatDateSl(date)} ob ${time}, pri ${place}! 💕`
-          : `Super, se vidiva ${formatDateSl(date)} ob ${time}! 💕`;
+          ? `${formatDateSl(date)} ob ${time}, ${place}`
+          : `${formatDateSl(date)} ob ${time}`;
         document.getElementById("page3").classList.remove("active");
         document.getElementById("page4").classList.add("active");
 
