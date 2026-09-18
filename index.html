@@ -644,10 +644,10 @@
       let chosenOption = "";
       let chosenDetail = ""; // location or sub-choice picked on page 2b
 
-      // Who is this link for? Add ?ime=Ana to the URL you send her, so you can
-      // tell entries apart later — e.g. yoursite.com/index.html?ime=Ana
+      // Who is this link for? Add ?sub=Ana to the URL you send her, so you can
+      // tell entries apart later — e.g. yoursite.com/index.html?sub=Ana
       const recipientName =
-        new URLSearchParams(window.location.search).get("ime") || "Neznana";
+        new URLSearchParams(window.location.search).get("sub") || "Neznana";
 
       // Sub-choice config per activity
       const subChoices = {
