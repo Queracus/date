@@ -603,12 +603,14 @@
               💌 Rezerviraj
             </button>
           </form>
-          <div
-            id="savedMsg"
-            class="saved-msg"
-            style="display: none"
-            aria-live="polite"
-          ></div>
+        </div>
+      </section>
+
+      <!-- ===== PAGE 4 — confirmation ===== -->
+      <section class="page" id="page4" aria-label="Potrjen zmenek">
+        <div class="card" role="region" aria-live="polite">
+          <div class="page1-deco" aria-hidden="true">💕</div>
+          <h2 id="confirmMsg"></h2>
         </div>
       </section>
     </main>
@@ -931,6 +933,11 @@
       })();
 
       // ===== Save date & notify =====
+      function formatDateSl(isoDate) {
+        const [y, m, d] = isoDate.split("-");
+        return `${d}.${m}.${y}`;
+      }
+
       function saveDate(e) {
         e.preventDefault();
         const date = document.getElementById("datePick").value;
@@ -952,12 +959,14 @@
         // Save to localStorage so it survives refresh
         localStorage.setItem("zmenek_izbira", JSON.stringify(data));
 
-        // Show saved message
-        const msg = document.getElementById("savedMsg");
-        const detailStr =
-          data.podrobnost !== "—" ? ` (${data.podrobnost})` : "";
-        msg.textContent = `Shranila sem: ${data.zmenek}${detailStr} — ${data.datum} ob ${data.ura}. 💕`;
-        msg.style.display = "block";
+        // Switch to the confirmation page
+        const place = data.podrobnost !== "—" ? data.podrobnost : "";
+        const confirmMsg = document.getElementById("confirmMsg");
+        confirmMsg.textContent = place
+          ? `Super, se vidiva ${formatDateSl(date)} ob ${time}, pri ${place}! 💕`
+          : `Super, se vidiva ${formatDateSl(date)} ob ${time}! 💕`;
+        document.getElementById("page3").classList.remove("active");
+        document.getElementById("page4").classList.add("active");
 
         // ── HOW TO GET EMAIL ALERTS ──────────────────────────────────────────
         // 1. Go to https://formspree.io → create free account → New Form
